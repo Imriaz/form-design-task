@@ -1,26 +1,22 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/Navbar';
-import Homepage from './components/Homepage';
-import AddEmployee from './components/AddEmployee';
-import AllEmployee from './components/Homepage/AllData/AllEmployee';
-import { Route, Routes } from 'react-router-dom';
-import NotFound from './components/NotFound';
-import AllData from './components/Homepage/AllData';
+import Navbar from "./components/Navbar";
+import AllEmployee from './components/Homepage';
 import Footer from './components/Footer';
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <Routes>
+      <AllEmployee />
+      {/* <Routes>
         <Route path="/" element={<AllEmployee />} />
-        <Route path="AllEmployee" element={<AllData />} />
+        <Route path="AllEmployee" element={<Homepage />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />
+        <Route path="/user" element={<Users />} />
         <Route path="*" element={<NotFound />} />
-      </Routes>
-      {/* <Homepage /> */}
+      </Routes> */}
       <Footer />
     </div>
   );

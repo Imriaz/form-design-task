@@ -1,24 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles} from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { TextField } from "@mui/material";
-import { Employee } from "../../model/model";
-
-interface inputFieldProps {
-  employeeID: number;
-  setEmployeeID: React.Dispatch<React.SetStateAction<number>>;
-  firstName: string;
-  setFirstName: React.Dispatch<React.SetStateAction<string>>;
-  lastName: string;
-  setLastName: React.Dispatch<React.SetStateAction<string>>;
-  company: string;
-  setCompany: React.Dispatch<React.SetStateAction<string>>;
-  designation: string;
-  setDesignation: React.Dispatch<React.SetStateAction<string>>;
-  email: string;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  handleAdd: (e: React.FormEvent) => void;
-}
 
 const useStyles = makeStyles({
   form: {
@@ -26,34 +9,13 @@ const useStyles = makeStyles({
     // gridTemplateColumns: "500px 500px",
     gridTemplateColumns: "1fr 1fr",
     gap: "50px",
-    backgroundColor: "#F5EEF8",
-    padding: "20px 100px",
-    border: "2px solid black",
-    borderRadius: "10px",
-    margin: "20px 150px",
+    // backgroundColor: "skyblue",
+    padding: "50px 100px",
   },
   formGroup: {
     gap: "10px",
     // backgroundColor: "skyblue",
     padding: "10px",
-  },
-  form__back__button: {
-    padding: "5px",
-    color: "black",
-    backgroundColor: "#27AE60",
-    borderRadius: "5px",
-    width: "100px",
-    margin: "15px",
-    marginLeft: "580px",
-  },
-  form__submit__button: {
-    padding: "5px",
-    color: "black",
-    backgroundColor: "#27AE60",
-    borderRadius: "5px",
-    width: "100px",
-    margin: "15px",
-    marginRight: "580px",
   },
   errorMessage: {
     Color: "red",
@@ -76,47 +38,31 @@ const designations = [
   },
 ];
 
-const AddEmployee = ({
-  employeeID,
-  setEmployeeID,
-  firstName,
-  setFirstName,
-  lastName,
-  setLastName,
-  company,
-  setCompany,
-  designation,
-  setDesignation,
-  email,
-  setEmail,
-  handleAdd,
-}: inputFieldProps) => {
-  // const [employee, setEmployee] = React.useState({
-  //     employeeID: "",
-  //     firstName: "",
-  //     lastName: "",
-  //     company: "",
-  //     designation: "",
-  //     email: "",
-  // });
+const submitData = () =>{
 
+}
+
+const AddEmployee: React.FC = () => {
+    const [designation, setDesignation] = React.useState("Software Engineer");
   const classes = useStyles();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDesignation(event.target.value);
+  };
 
   return (
     <React.Fragment>
-      <h1>Add Employee</h1>
+        <h1>Add Employee</h1>
       <form>
         <Link to={`/`}>
-          <button className={classes.form__back__button}>Back</button>
+          <button>Back</button>
         </Link>
         <div className={classes.form}>
           <div className={classes.formGroup}>
             <TextField
               required
-              label="Employee ID"
               id="employeeID"
-              value={employeeID}
-              onChange={(event) => setEmployeeID(Number(event.target.value))}
+              label="Employee ID"
               type="number"
               inputProps={{ pattern: "[0-9]*" }}
             />
@@ -126,8 +72,6 @@ const AddEmployee = ({
               type="number"
               className="form-input"
               placeholder="Employee ID"
-              name="employeeID"
-              onBlur={handleChange}
               minLength={1}
               maxLength={100}
               pattern="^[0-9]"
@@ -140,21 +84,17 @@ const AddEmployee = ({
               required
               id="firstName"
               label="First Name"
-              value={firstName}
-              onChange={(event) => setFirstName(event.target.value)}
               variant="outlined"
               inputProps={{
                 inputMode: "text",
                 pattern: "([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+",
               }}
             />
-            {/* <label className="form-label">First Name: </label>
-            <input
+            {/* <label className="form-label">First Name: </label> */}
+            {/* <input
               type="text"
               className="form-input"
               placeholder="First Name"
-              name="firstName"
-              onChange={handleChange}
               minLength={1}
               maxLength={100}
               pattern="([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+"
@@ -168,8 +108,6 @@ const AddEmployee = ({
               id="lastName"
               label="Last Name"
               variant="outlined"
-              value={lastName}
-              onChange={(event) => setLastName(event.target.value)}
               inputProps={{
                 inputMode: "text",
                 pattern: "([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+",
@@ -193,8 +131,6 @@ const AddEmployee = ({
               id="company"
               label="Company"
               variant="outlined"
-              value={company}
-              onChange={(event) => setCompany(event.target.value)}
               inputProps={{
                 inputMode: "text",
                 pattern: "([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+",
@@ -218,8 +154,7 @@ const AddEmployee = ({
               select
               label="Designation"
               value={designation}
-              //   onChange={handleDesignation}
-              onChange={(event) => setDesignation(event.target.value)}
+              onChange={handleChange}
               SelectProps={{
                 native: true,
               }}
@@ -249,8 +184,6 @@ const AddEmployee = ({
               id="email"
               label="Email"
               variant="outlined"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
               inputProps={{
                 inputMode: "email",
                 pattern: "[^ ]+@[^ ]+.[a-z]{2,3}",
@@ -268,15 +201,7 @@ const AddEmployee = ({
             {/* <p className={classes.errorMessage}>Error message</p> */}
           </div>
         </div>
-        <button
-          type="submit"
-          id="submit"
-          onClick={(e) => handleAdd(e)}
-          value="SEND"
-          className={classes.form__submit__button}
-        >
-          Submit
-        </button>
+        <button type="submit" id="submit" onClick={submitData} value="SEND">Submit</button>
       </form>
     </React.Fragment>
   );

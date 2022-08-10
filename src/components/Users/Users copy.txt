@@ -1,0 +1,156 @@
+import React, {useState } from 'react';
+import User from '../User/User';
+
+const Users = () => {
+    const [users, setUsers] = useState([]);
+    const [disable, setDisable] = useState(false);
+    const [updateIndex, setUpdateIndex] = useState(0);
+    const [updateEmployeeID, setUpdateEmployeeID] = useState("");
+    const [updateFirstName, setUpdateFirstName] = useState("");
+    const [updateLastName, setUpdateLastName] = useState("");
+
+    const [employeeID, setEmployeeID] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [isUpdate, setIsUpdate] = useState(false);
+
+    // Add User
+    const addTo = e => {
+        e.preventDefault();
+        if (!employeeID || !firstName || !lastName) return;
+        let newUser = {
+          employeeID: employeeID,
+          firstName: firstName,
+          lastName: lastName,
+        };
+        const newUsers = [...users, newUser];
+        setUsers(newUsers);
+        setEmployeeID("");
+        setFirstName("");
+        setLastName("");
+
+        setDisable(true);
+        setTimeout(()=> {
+            setDisable(false);
+        }, 5000)
+    
+    }
+
+    // Remove User
+    const removeUser = (employeeID) => {
+        console.log("employeeID", employeeID);
+        const newUsers = users.filter((user) => user.employeeID !== employeeID);
+        setUsers(newUsers);
+    }
+
+    // handle Update
+    const handleUpdate = e => {
+        e.preventDefault();
+        let newUsers = [...users];
+        const employeeID = newUsers[updateIndex].employeeID;
+        let updateUser = {
+          employeeID: employeeID,
+          firstName: updateFirstName,
+          lastName: updateLastName,
+        };
+        newUsers[updateIndex] = updateUser;
+        setUsers(newUsers);
+        setIsUpdate(false);
+    }
+
+    const updateUser = (employeeID, isUpdate) => {
+        setIsUpdate(true);
+        const findUser = users.find((user) => user.employeeID === employeeID);
+        const index = users.findIndex(user => user === findUser);
+        setUpdateIndex(index);
+        setUpdateFirstName(users[index].firstName);
+        setUpdateLastName(users[index].lastName);
+    }
+
+    return (
+      <div>
+        {isUpdate ? (
+          <div>
+            <h2>Update</h2>
+            <form onSubmit={handleUpdate}>
+              <p>Employee ID</p>
+              <input
+                type="text"
+                value={updateEmployeeID}
+                onChange={(e) => setUpdateEmployeeID(e.target.value)}
+              />
+              <p>Employee First Name</p>
+              <input
+                type="text"
+                value={updateFirstName}
+                onChange={(e) => setUpdateFirstName(e.target.value)}
+              />
+              <p>Employee Last Name</p>
+              <input
+                type="text"
+                value={updateLastName}
+                onChange={(e) => setUpdateLastName(e.target.value)}
+              />
+              <br />
+              <button className="my-2" disabled={disable} type="submit">
+                Update
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div>
+            <h1 className="my-4">
+              <span className="bg-success text-white p-2 rounded">
+                Add User
+              </span>
+            </h1>
+            <form onSubmit={addTo}>
+              <p>Employee ID</p>
+              <input
+                type="text"
+                value={employeeID}
+                onChange={(e) => setEmployeeID(e.target.value)}
+                placeholder="Enter Employee ID"
+              />
+              <p>Employee First Name</p>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter First Name"
+                required
+              />
+              <p>Employee Last Name</p>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Enter Last Name"
+                required
+              />
+              <br />
+              <br />
+              <button className="btn btn-primary my-2" type="submit">
+                Add
+              </button>
+            </form>
+          </div>
+        )}
+
+        <div>
+          <div className="row">
+            {users.map((user) => (
+              <User
+                key={user.employeeID}
+                user={user}
+                updateUser={updateUser}
+                removeUser={removeUser}
+              ></User>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+};
+
+export default Users;

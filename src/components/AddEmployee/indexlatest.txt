@@ -4,22 +4,6 @@ import { Link } from "react-router-dom";
 import { TextField } from "@mui/material";
 import { Employee } from "../../model/model";
 
-interface inputFieldProps {
-  employeeID: number;
-  setEmployeeID: React.Dispatch<React.SetStateAction<number>>;
-  firstName: string;
-  setFirstName: React.Dispatch<React.SetStateAction<string>>;
-  lastName: string;
-  setLastName: React.Dispatch<React.SetStateAction<string>>;
-  company: string;
-  setCompany: React.Dispatch<React.SetStateAction<string>>;
-  designation: string;
-  setDesignation: React.Dispatch<React.SetStateAction<string>>;
-  email: string;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  handleAdd: (e: React.FormEvent) => void;
-}
-
 const useStyles = makeStyles({
   form: {
     display: "grid",
@@ -76,31 +60,43 @@ const designations = [
   },
 ];
 
-const AddEmployee = ({
-  employeeID,
-  setEmployeeID,
-  firstName,
-  setFirstName,
-  lastName,
-  setLastName,
-  company,
-  setCompany,
-  designation,
-  setDesignation,
-  email,
-  setEmail,
-  handleAdd,
-}: inputFieldProps) => {
-  // const [employee, setEmployee] = React.useState({
-  //     employeeID: "",
-  //     firstName: "",
-  //     lastName: "",
-  //     company: "",
-  //     designation: "",
-  //     email: "",
-  // });
+const submitData = () =>{
 
-  const classes = useStyles();
+}
+
+const AddEmployee: React.FC = () => {
+    // const [employee, setEmployee] = React.useState({
+    //     employeeID: "",
+    //     firstName: "",
+    //     lastName: "",
+    //     company: "",
+    //     designation: "",
+    //     email: "",
+    // });
+    const [employee, setEmployee] = React.useState<Employee[]>([]);
+    const [employeeID, setEmployeeID] = useState<number>(11);
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
+    const [company, setCompany] = useState<string>("");
+    const [designation, setDesignation] =useState<string>("Software Engineer");
+    const [email, setEmail] = useState<string>("");
+
+    const classes = useStyles();
+
+  let name, value;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDesignation(event.target.value);
+    // console.log(event);
+    // name=event.target.name;
+    // value=event.target.value;
+    // setEmployee({...employee, [name]:value})
+    // console.log(employee);
+
+  };
+    // const handleDesignation = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //   setDesignation(event.target.value);
+    // };
+
 
   return (
     <React.Fragment>
@@ -271,7 +267,7 @@ const AddEmployee = ({
         <button
           type="submit"
           id="submit"
-          onClick={(e) => handleAdd(e)}
+          onClick={submitData}
           value="SEND"
           className={classes.form__submit__button}
         >

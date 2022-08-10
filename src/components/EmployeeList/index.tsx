@@ -1,7 +1,13 @@
+import { makeStyles } from "@material-ui/core";
 import { Table } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Employee } from "../../../model/model";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { Employee } from "../../model/model";
+
+interface EmployeeListProps {
+  employees: Employee[];
+  setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
+}
 
 const useStyles = makeStyles({
   employeeAddAndSearch: {
@@ -12,33 +18,34 @@ const useStyles = makeStyles({
   },
 });
 
-const AllEmployee: React.FC = () => {
+const EmployeeList = ({ employees, setEmployees }: EmployeeListProps) => {
   const classes = useStyles();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [employees, setEmployees] = useState<Employee[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [searchEmployee, setSearchEmployee] = React.useState<Employee[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-
-  useEffect(() => {
-    fetch("./Employee.json")
-      .then((res) => res.json())
-      .then((data) => setEmployees(data));
-  }, []);
 
   //Search Employee
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSearching(true);
     console.log(searchText);
-    const findEmployee = employees.filter((employee) =>
-      employee.firstName.toLowerCase().includes(searchText.toLowerCase())
+    const findEmployee = employees.filter(
+      (employee) =>
+        employee.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
+        employee.lastName.toLowerCase().includes(searchText.toLowerCase())
     );
     setSearchEmployee(findEmployee);
     // setSearchText("");
   };
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  // Remove Employee
+  // const handleDelete = (employeeID: any) => {
+  //   console.log("employeeID", employeeID);
+  //   const newUsers = employees.filter((user) => user.employeeID !== employeeID);
+  //   setEmployees(newUsers);
+  // };
 
   return (
     <React.Fragment>
@@ -62,7 +69,9 @@ const AllEmployee: React.FC = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
           </form>
-          <button>Add Employee</button>
+          <Link to={`/AddEmployee`}>
+            <button>Add Employee</button>
+          </Link>
         </div>
         <div className="row">
           <Table>
@@ -92,13 +101,13 @@ const AllEmployee: React.FC = () => {
                       <td>{employee?.email}</td>
 
                       <button
-                        onClick={() => "handleEdit(employee?.employeeID)"}
+                        // onClick={() => "handleEdit(employee?.employeeID)"}
                         className=""
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => "handleDelete(employee?.employeeID)"}
+                        // onClick={() => handleDelete(employee?.employeeID)}
                         className=""
                       >
                         Delete
@@ -127,7 +136,7 @@ const AllEmployee: React.FC = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => "handleDelete(employee?.employeeID)"}
+                        // onClick={() => handleDelete(employee?.employeeID)}
                         className=""
                       >
                         Delete
@@ -144,4 +153,4 @@ const AllEmployee: React.FC = () => {
   );
 };
 
-export default AllEmployee;
+export default EmployeeList;
